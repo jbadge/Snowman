@@ -1,6 +1,4 @@
 :root {
-  font: 16px / 1 sans-serif;
-
   // SDG brand colors
   --asphalt: #2f3737;
   --bright-sky: #80ced2;
@@ -10,13 +8,115 @@
   --sea: #5a9090;
   --sun: #d5562b;
   --tangerine: #f99d1b;
+
+  font: 16px / 1 sans-serif;
 }
 
 html {
   height: 100%;
 }
 
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
 body {
-  margin: 0;
   min-height: 100%;
+}
+
+ul {
+  list-style: none;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  header {
+    h1 {
+      padding: 1rem;
+      font-size: 3rem;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 1rem;
+      text-align: center;
+    }
+  }
+  section {
+    // margin: 10px;
+    // padding: 10px;
+    // line-height: 2.5rem;
+
+    &#game-board {
+      .results-area {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        // justify-content: center;
+        .snowman-area {
+          display: flex;
+          justify-content: center;
+          .snowman-pic1 {
+            height: 50%;
+            width: 50%;
+            content: url('/images/step_1.png');
+          }
+          .snowman-pic2 {
+            height: 50%;
+            width: 50%;
+            content: url('/images/step_2.png');
+          }
+          .snowman-pic3 {
+            height: 50%;
+            width: 50%;
+            content: url('/images/step_3.png');
+          }
+          .snowman-pic4 {
+            height: 50%;
+            width: 50%;
+            content: url('/images/step_4.png');
+          }
+          .snowman-pic5 {
+            height: 50%;
+            width: 50%;
+            content: url('/images/step_5.png');
+          }
+          .snowman-pic6 {
+            height: 50%;
+            width: 50%;
+            content: url('/images/step_6.png');
+          }
+          .snowman-pic7 {
+            height: 50%;
+            width: 50%;
+            content: url('/images/step_7.png');
+          }
+        }
+        .revealed-area {
+          padding: 2rem 0px;
+          font-size: 4rem;
+          .letters-revealed {
+            display: grid;
+            text-align: center;
+            grid-template-columns: repeat(7, minmax(5rem, 1fr));
+            gap: 1rem;
+          }
+        }
+      }
+    }
+    &#alphabet {
+      padding-top: 2rem;
+      .letters-list {
+        display: grid;
+        text-align: center;
+        grid-template-columns: repeat(13, minmax(2rem, 1fr));
+        gap: 2rem;
+      }
+    }
+  }
 }
