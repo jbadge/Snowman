@@ -10,8 +10,8 @@ type Game = {
   letter: null | string
   word: string[]
   board: Board
-  state: string | null
-  // state: null | undefined | 'new' | 'playing' | 'won'
+  state: null | 'new' | 'playing' | 'won'
+  // May have to treat like "Difficulty"
   numOfCorrectLetters: null | number
 }
 
@@ -19,8 +19,8 @@ const initialState = {
   letter: null,
   word: [],
   board: ['_', '_', '_', '_', '_', '_', '_'],
-  state: undefined,
-  numOfCorrectLetters: 0,
+  state: null,
+  numOfCorrectLetters: null,
 }
 
 export function App() {
@@ -29,85 +29,119 @@ export function App() {
     word: [],
     board: ['_', '_', '_', '_', '_', '_', '_'],
     state: null,
-    numOfCorrectLetters: 0,
+    numOfCorrectLetters: null,
+
     // numOfLetter:7
   })
 
   function handleClickABCButton(value: string) {
+    console.log('Running handleClickABCButton')
     if (game.state === null) {
       return
     }
     disableButton(value)
-
     let count = 0
-
-    console.log(`Before: ${game.board}`)
-
-    // const newGameBoard = { ...game }
-    const tempBoard = [...game.board]
+    let tempArray = game.board
+    // apparently this is also not updating!??
+    // setGame({ ...game, letter: value })
     if (game.word.includes(value)) {
       for (let i in game.word) {
         if (game.word[i] === value) {
-          tempBoard[i] = game.word[i]
+          tempArray[i] = game.word[i]
           count++
-          console.log(game.word)
-          console.log(tempBoard)
         }
       }
     }
     step += count
-
-    let tempState = gameStatus(game.state, tempBoard)
-
-    setGame({
-      ...game,
-      letter: value,
-      board: tempBoard,
-      numOfCorrectLetters: step,
-      state: tempState!,
-    })
-    consoleMessages()
+    console.log(`The variable step is at ${step}`)
+    // numOfCorrectLetters is not updating
+    // I guess the below board wasn't being set here!!
+    // setGame({ ...game, board: tempArray, numOfCorrectLetters: step })
+    // or should I put the change to game state in above setGame?
+    // setGame({ ...game, numOfCorrectLetters: step })
+    gameStatus(game.state)
+    console.log(`The letter is ${game.letter}`)
+    console.log(`The word is ${game.word.join('')}`)
+    console.log(`The board has ${game.board.join(' ')}`)
+    console.log(`The state is ${game.state}`)
+    console.log(`The numOfCorrectLetters is ${game.numOfCorrectLetters}`)
   }
 
-  async function handleNewGame() {
+  // currently seems to set it back to initial, but not continue new game
+  // RESET Does not seem to make the board fresh, but does reset the rest
+  function resetGame() {
+    console.log('Running resetGame')
+
+    // enable all buttons -- Seems to work
     enableButtons()
-    const newGame = { ...initialState }
+    // re-set the game state -- Does not reset the picture, at the very least
+    // re-hide all the letter -- seems to mostly work
+    setGame({ ...initialState })
+    console.log(game)
+    console.log(initialState)
+  }
+
+  // New Game DOES seem to refresh the entire object
+  async function handleNewGame() {
+    console.log('Running handleNewGame')
+
+    // Resetting game does not seem to be working fully, 100% of the time
+
+    // If there is a game in progress, and the button is clicked, reset
+    // 3/7/24 4:46pm commented out but seemed necessary to work, yesterday, 3/6/24
+    // if (game.state !== null) {
+    //   resetGame()
+    // } else {
+    // if there is a new game with null state, follow this
+    // game.word
+    console.log(game)
     let tempWord = words[Math.floor(Math.random() * 1024)]
       .toUpperCase()
       .split('')
+    // TEST WORD WITH 2 OF SAME LETTER
     // game.word = ['L', 'E', 'I', 'E', 'G', 'H', 'A']
-    setGame({ ...newGame, word: tempWord, state: 'new' })
+    setGame({ ...game, word: tempWord, state: 'new' })
+    console.log(tempWord)
     console.log(`The word is ${tempWord.join('')}`)
-    console.log(`The board has ${newGame.board.join(' ')}`)
+    console.log(`The board has ${game.board.join(' ')}`)
+    console.log(game)
+    // }
   }
 
-  function gameStatus(status: string | null, board: Array<String>) {
-    if (status !== null && board.includes('_')) {
-      return 'playing'
-    } else if (status === 'playing' && !board.includes('_')) {
-      return 'won'
+  function gameStatus(status: string | null) {
+    console.log('Running gameStatus')
+
+    if (status !== null && game.board.includes('_')) {
+      status = 'playing'
+    } else if (!game.board.includes('_')) {
+      // do something if won? display cool message or something?
+      status = 'won'
     }
+    setGame({ ...game, state: game.state })
   }
 
   // Disabling/Re-enabling seems to be working fine
   function disableButton(letter: string) {
+    console.log('Running disableButton')
+
     const button = document.getElementById(letter)
     button?.setAttribute('disabled', 'true')
   }
 
   function enableButtons() {
+    console.log('Running enableButtons')
+
     const buttons = document.querySelectorAll('button')
     buttons.forEach((button) => {
       button.removeAttribute('disabled')
     })
   }
 
-  function consoleMessages() {
-    console.log(`The letter is ${game.letter}`)
-    console.log(`The word is ${game.word.join('')}`)
-    console.log(`The board has ${game.board.join(' ')}`)
-    console.log(`The state is ${game.state}`)
-    console.log(`The numOfCorrectLetters is ${game.numOfCorrectLetters}`)
+  // testing helper function
+  function checkGameState() {
+    console.log('Running checkGameState')
+
+    console.log(game)
   }
 
   //function for 3 different button labels:
@@ -127,24 +161,37 @@ export function App() {
               ? 'New Game'
               : 'Play Again?'}
           </button>
+          <button onClick={resetGame}>Reset?</button>
+          <button onClick={checkGameState}>Check Game State</button>
         </header>
         <section id="game-board">
           <div className="results-area">
             <div className="snowman-area">
-              <div className={`snowman-pic${game.numOfCorrectLetters}`} />
+              <div className={`snowman-pic${step}`} />
             </div>
             <div className="revealed-area">
               <ul className="letters-revealed">
-                {/* <li className={game.board[0] === '_' ? undefined : 'revealed'}>
+                <li className={game.board[0] === '_' ? undefined : 'revealed'}>
                   {game.board[0]}
-                </li> */}
-                <li>{game.board[0]}</li>
-                <li>{game.board[1]}</li>
-                <li>{game.board[2]}</li>
-                <li>{game.board[3]}</li>
-                <li>{game.board[4]}</li>
-                <li>{game.board[5]}</li>
-                <li>{game.board[6]}</li>
+                </li>
+                <li className={game.board[1] === '_' ? undefined : 'revealed'}>
+                  {game.board[1]}
+                </li>
+                <li className={game.board[2] === '_' ? undefined : 'revealed'}>
+                  {game.board[2]}
+                </li>
+                <li className={game.board[3] === '_' ? undefined : 'revealed'}>
+                  {game.board[3]}
+                </li>
+                <li className={game.board[4] === '_' ? undefined : 'revealed'}>
+                  {game.board[4]}
+                </li>
+                <li className={game.board[5] === '_' ? undefined : 'revealed'}>
+                  {game.board[5]}
+                </li>
+                <li className={game.board[6] === '_' ? undefined : 'revealed'}>
+                  {game.board[6]}
+                </li>
               </ul>
             </div>
           </div>
