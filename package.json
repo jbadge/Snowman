@@ -17,8 +17,12 @@
     "useTabs": false
   },
   "dependencies": {
+    "@types/uuid": "^9.0.8",
+    "crypto-randomuuid": "^1.0.0",
     "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "react-dom": "^17.0.0",
+    "react-fade-in": "^2.0.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/react": "^17.0.0",

@@ -4,3 +4,5 @@ dist
 dist-ssr
 *.local
 src/App.bak.tsk
+src/Cell.tsx.
+src/scratchpad.md
