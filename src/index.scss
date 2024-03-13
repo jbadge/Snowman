@@ -51,23 +51,29 @@ main {
         margin: 2rem;
         padding: 0 2rem;
         line-height: 2.5rem;
-        position: relative;
         .snowman-area {
           display: flex;
           justify-content: center;
           img {
+            position: relative;
+            float: left;
             width: 100%;
             height: auto;
             max-width: 350px;
-            z-index: -1;
           }
           .gif {
             border: 0;
             position: absolute;
+            margin-left: 10px;
+            width: 320px;
+            height: 320px;
             z-index: 1;
-            left: 3rem;
-            width: 79%;
-            height: 20rem;
+            &.hidden {
+              visibility: hidden;
+            }
+            &.won {
+              visibility: visible;
+            }
           }
         }
         .revealed-area {

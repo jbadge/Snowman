@@ -3,8 +3,10 @@ import React, { useState } from 'react'
 import { GameBoard } from './components/GameBoard'
 import { Alphabet } from './components/Alphabet'
 import words from './words.json'
+import FadeIn from 'react-fade-in'
 
 type Board = string[]
+
 type Game = {
   letter: null | string
   word: string[]
@@ -12,13 +14,7 @@ type Game = {
   state: string | null
   numOfCorrectLetters: number
 }
-const initialState = {
-  letter: null,
-  word: [],
-  board: ['_', '_', '_', '_', '_', '_', '_'],
-  state: null,
-  numOfCorrectLetters: 0,
-}
+
 export function App() {
   const banner = document.querySelector('h2')
   const [snowmanPicCount, setSnowmanPicCount] = useState(0)
@@ -42,7 +38,9 @@ export function App() {
     }
 
     let tempState = gameStatus(game.state, tempBoard)
-    setSnowmanPicCount(game.numOfCorrectLetters + count)
+    if (snowmanPicCount < 6) {
+      setSnowmanPicCount(game.numOfCorrectLetters + count)
+    }
 
     setGame({
       ...game,
@@ -57,6 +55,9 @@ export function App() {
     if (banner instanceof HTMLHeadingElement) {
       banner.innerHTML = 'A Hangman-Style Game'
     }
+    document.getElementById('snow')?.classList.add('hidden')
+    document.getElementById('snow')?.classList.remove('won')
+
     setSnowmanPicCount(0)
     toggleButton()
     const newGame = { ...initialState }
@@ -71,10 +72,10 @@ export function App() {
   function gameStatus(status: string | null, board: Array<String>) {
     if (status !== null && board.includes('_')) {
       document.getElementById('gameButton')?.classList.remove('hidden')
-
       return 'playing'
     } else if (status === 'playing' && !board.includes('_')) {
-      document.getElementById('iframeWrapper')?.classList.remove('won')
+      document.getElementById('snow')?.classList.remove('hidden')
+      document.getElementById('snow')?.classList.add('won')
       if (banner instanceof HTMLHeadingElement) {
         banner.innerHTML = 'You won!'
       }
@@ -95,12 +96,20 @@ export function App() {
   }
 
   return (
-    <div>
-      <main>
+    <main>
+      <FadeIn transitionDuration={700}>
         <Header gameState={game.state} makeGame={makeGame} />
         <GameBoard gameBoard={game.board} picCount={snowmanPicCount} />
         <Alphabet pushAlphaButton={pushAlphaButton} />
-      </main>
-    </div>
+      </FadeIn>
+    </main>
   )
+}
+
+const initialState = {
+  letter: null,
+  word: [],
+  board: ['_', '_', '_', '_', '_', '_', '_'],
+  state: null,
+  numOfCorrectLetters: 0,
 }

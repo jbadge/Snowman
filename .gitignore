@@ -3,5 +3,6 @@ node_modules
 dist
 dist-ssr
 *.local
-src/App.bak.tsk
 src/scratchpad.md
+# Local Netlify folder
+.netlify
