@@ -60,21 +60,31 @@ main {
           justify-content: center;
           position: relative;
           color: #fff;
-
           .text {
             position: absolute;
             font-family: 'Sue Ellen Francisco';
             fill: #fff;
             text-shadow: 3px 3px 1px #000000;
             font-size: 2rem;
-            z-index: 1;
+            z-index: 3;
           }
           img {
-            position: relative;
-            float: left;
-            width: 100%;
-            height: auto;
-            max-width: 350px;
+            &#image {
+              position: relative;
+              float: left;
+              width: 100%;
+              height: auto;
+              max-width: 350px;
+              z-index: 2;
+            }
+            &#image2 {
+              position: absolute;
+              float: left;
+              width: 100%;
+              height: auto;
+              max-width: 350px;
+              z-index: 1;
+            }
           }
           .gif {
             border: 0;
@@ -82,7 +92,7 @@ main {
             margin-left: 10px;
             width: 320px;
             height: 320px;
-            z-index: 1;
+            z-index: 4;
             font-size: 5;
             &.hidden {
               visibility: hidden;
@@ -181,6 +191,9 @@ button[disabled] {
 .elementToFadeIn {
   animation: fade-in 1s linear forwards;
 }
+.elementToFadeInSnow {
+  animation: fade-in 3s linear forwards;
+}
 @keyframes fade-in {
   from {
     opacity: 0%;
@@ -192,6 +205,9 @@ button[disabled] {
 
 .elementToFadeOut {
   animation: fade-out 1s linear forwards;
+}
+.elementToFadeOutSnow {
+  animation: fade-out 5s linear forwards;
 }
 @keyframes fade-out {
   from {

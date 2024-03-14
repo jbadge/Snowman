@@ -27,6 +27,9 @@ export function App() {
   const winnerElement = document.getElementById('winner')
   const bannerElement = document.getElementById('banner')
   const snowElement = document.getElementById('snow')
+  const imageElement = document.getElementById('image')
+  const imageElement2 = document.getElementById('image2')
+
   const [snowmanPicCount, setSnowmanPicCount] = useState(0)
   const [game, setGame] = useState<Game>({ ...initialState })
 
@@ -48,7 +51,7 @@ export function App() {
     }
 
     let tempState = gameStatus(game.state, tempBoard)
-    if (snowmanPicCount < 6) {
+    if (snowmanPicCount < 7) {
       setSnowmanPicCount(game.numOfCorrectLetters + numOfLettersInWord)
     }
 
@@ -67,21 +70,28 @@ export function App() {
       bannerElement.innerHTML = 'A Hangman-Style Game'
     }
 
-    // Hides the snow
+    // Hides the snow, the win, and the snowman
     if (!snowElement?.classList.contains('hidden')) {
-      winnerElement?.classList.add('hidden')
-      snowElement?.classList.remove('elementToFadeIn')
-      snowElement?.classList.add('elementToFadeOut')
+      snowElement?.classList.remove('elementToFadeInSnow')
+      snowElement?.classList.add('elementToFadeOutSnow')
+      winnerElement?.classList.add('elementToFadeOut')
+      imageElement?.classList.add('elementToFadeOut')
+      imageElement2?.classList.remove('hidden')
+      imageElement2?.classList.add('elementToFadeIn')
 
       setTimeout(function () {
+        winnerElement?.classList.add('hidden')
+        imageElement?.classList.remove('elementToFadeOut')
+        setSnowmanPicCount(0)
         setTimeout(function () {
           snowElement?.classList.add('hidden')
-          snowElement?.classList.remove('elementToFadeOut')
-        }, 1000)
+          snowElement?.classList.remove('elementToFadeOutSnow')
+          winnerElement?.classList.remove('elementToFadeOut')
+          imageElement?.classList.remove('elementToFadeIn')
+        }, 4000)
       }, 1000)
     }
 
-    setSnowmanPicCount(0)
     toggleButton()
     const newGame = { ...initialState }
 
@@ -105,7 +115,7 @@ export function App() {
       return 'playing'
       // Won Game
     } else if (status === 'playing' && !board.includes('_')) {
-      snowElement?.classList.add('elementToFadeIn')
+      snowElement?.classList.add('elementToFadeInSnow')
       winnerElement?.classList.remove('hidden')
       snowElement?.classList.remove('hidden')
       return 'won'

@@ -2,6 +2,7 @@ import React from 'react'
 import FadeIn from 'react-fade-in'
 import { v4 as uuidv4 } from 'uuid'
 import snow from '../../images/transparent_images/snow.gif'
+import step_0 from '../../images/transparent_images/step_0.png'
 import step_1 from '../../images/transparent_images/step_1.png'
 import step_2 from '../../images/transparent_images/step_2.png'
 import step_3 from '../../images/transparent_images/step_3.png'
@@ -15,7 +16,16 @@ type GameBoardProps = {
   picCount: number
 }
 
-const snowmanPicArray = [step_1, step_2, step_3, step_4, step_5, step_6, step_7]
+const snowmanPicArray = [
+  step_0,
+  step_1,
+  step_2,
+  step_3,
+  step_4,
+  step_5,
+  step_6,
+  step_7,
+]
 
 export function GameBoard({ gameBoard, picCount }: GameBoardProps) {
   return (
@@ -26,7 +36,14 @@ export function GameBoard({ gameBoard, picCount }: GameBoardProps) {
             <iframe id="snow" className="gif hidden" src={snow}></iframe>
             <img
               id="image"
+              className="test"
               src={snowmanPicArray[picCount]}
+              alt="Image of snowman"
+            />
+            <img
+              id="image2"
+              className="fadeIn hidden"
+              src={snowmanPicArray[0]}
               alt="Image of snowman"
             />
             <svg id="winner" className="text hidden" viewBox="0 0 130 50">
