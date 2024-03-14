@@ -10,7 +10,7 @@ export function Header({ gameState, makeGame }: HeaderProps) {
   return (
     <header>
       <h1>Snowman</h1>
-      <h2>A Hangman-Style Game</h2>
+      <h2 id="banner">A Hangman-Style Game</h2>
       <GameButton gameState={gameState} makeGame={makeGame} />
     </header>
   )

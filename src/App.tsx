@@ -15,13 +15,23 @@ type Game = {
   numOfCorrectLetters: number
 }
 
+let testMode = 0
 export function App() {
-  const banner = document.querySelector('h2')
+  const initialState = {
+    letter: null,
+    word: [],
+    board: ['_', '_', '_', '_', '_', '_', '_'],
+    state: null,
+    numOfCorrectLetters: 0,
+  }
+  const winnerElement = document.getElementById('winner')
+  const bannerElement = document.getElementById('banner')
+  const snowElement = document.getElementById('snow')
   const [snowmanPicCount, setSnowmanPicCount] = useState(0)
   const [game, setGame] = useState<Game>({ ...initialState })
 
   function pushAlphaButton(value: string) {
-    let count = 0
+    let numOfLettersInWord = 0
     toggleButton(value)
 
     if (game.state === null) {
@@ -32,62 +42,83 @@ export function App() {
       for (let i in game.word) {
         if (game.word[i] === value) {
           tempBoard[i] = game.word[i]
-          count++
+          numOfLettersInWord++
         }
       }
     }
 
     let tempState = gameStatus(game.state, tempBoard)
     if (snowmanPicCount < 6) {
-      setSnowmanPicCount(game.numOfCorrectLetters + count)
+      setSnowmanPicCount(game.numOfCorrectLetters + numOfLettersInWord)
     }
 
     setGame({
       ...game,
       letter: value,
       board: tempBoard,
-      numOfCorrectLetters: game.numOfCorrectLetters + count,
+      numOfCorrectLetters: game.numOfCorrectLetters + numOfLettersInWord,
       state: tempState!,
     })
   }
 
   async function makeGame() {
-    if (banner instanceof HTMLHeadingElement) {
-      banner.innerHTML = 'A Hangman-Style Game'
+    // Resets word being displayed in the heading in testMode
+    if (bannerElement instanceof HTMLHeadingElement && testMode === 1) {
+      bannerElement.innerHTML = 'A Hangman-Style Game'
     }
-    document.getElementById('snow')?.classList.add('hidden')
-    document.getElementById('snow')?.classList.remove('won')
+
+    // Hides the snow
+    if (!snowElement?.classList.contains('hidden')) {
+      winnerElement?.classList.add('hidden')
+      snowElement?.classList.remove('elementToFadeIn')
+      snowElement?.classList.add('elementToFadeOut')
+
+      setTimeout(function () {
+        setTimeout(function () {
+          snowElement?.classList.add('hidden')
+          snowElement?.classList.remove('elementToFadeOut')
+        }, 1000)
+      }, 1000)
+    }
 
     setSnowmanPicCount(0)
     toggleButton()
     const newGame = { ...initialState }
+
     let tempWord = words[Math.floor(Math.random() * 1024)]
       .toUpperCase()
       .split('')
     setGame({ ...newGame, word: tempWord, state: 'new' })
-    document.getElementById('gameButton')?.classList.add('hidden')
-    console.log(`The word is ${tempWord.join('')}`)
+
+    // Helper for debugging
+    if (testMode === 1) {
+      console.log(`The word is ${tempWord.join('')}`)
+    }
   }
 
   function gameStatus(status: string | null, board: Array<String>) {
+    // New Game
     if (status !== null && board.includes('_')) {
-      document.getElementById('gameButton')?.classList.remove('hidden')
-      return 'playing'
-    } else if (status === 'playing' && !board.includes('_')) {
-      document.getElementById('snow')?.classList.remove('hidden')
-      document.getElementById('snow')?.classList.add('won')
-      if (banner instanceof HTMLHeadingElement) {
-        banner.innerHTML = 'You won!'
+      if (bannerElement instanceof HTMLHeadingElement && testMode === 1) {
+        bannerElement.innerHTML = `The word is ${game.word.join('')}`
       }
+      return 'playing'
+      // Won Game
+    } else if (status === 'playing' && !board.includes('_')) {
+      snowElement?.classList.add('elementToFadeIn')
+      winnerElement?.classList.remove('hidden')
+      snowElement?.classList.remove('hidden')
       return 'won'
     }
   }
 
   function toggleButton(letter: string = '') {
+    // Disable button
     if (letter !== '') {
       const button = document.getElementById(letter)
       button?.setAttribute('disabled', 'true')
     } else {
+      // Enable button
       const buttons = document.querySelectorAll('button')
       buttons.forEach((button) => {
         button.removeAttribute('disabled')
@@ -104,12 +135,4 @@ export function App() {
       </FadeIn>
     </main>
   )
-}
-
-const initialState = {
-  letter: null,
-  word: [],
-  board: ['_', '_', '_', '_', '_', '_', '_'],
-  state: null,
-  numOfCorrectLetters: 0,
 }

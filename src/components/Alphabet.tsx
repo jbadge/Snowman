@@ -4,28 +4,6 @@ type AlphabetProps = {
   pushAlphaButton: (_value: string) => void
 }
 
-export function Alphabet({ pushAlphaButton }: AlphabetProps) {
-  function handleClickABCButton(value: string) {
-    pushAlphaButton(value)
-  }
-  return (
-    <section id="alphabet">
-      {letters.map((letter) => {
-        return (
-          <button
-            key={letter.toString()}
-            id={letter}
-            className="abcLetter"
-            onClick={() => handleClickABCButton(letter)}
-          >
-            {letter}
-          </button>
-        )
-      })}
-    </section>
-  )
-}
-
 const letters = [
   'A',
   'B',
@@ -54,3 +32,25 @@ const letters = [
   'Y',
   'Z',
 ]
+
+export function Alphabet({ pushAlphaButton }: AlphabetProps) {
+  function handleClickABCButton(value: string) {
+    pushAlphaButton(value)
+  }
+  return (
+    <section id="alphabet">
+      {letters.map((letter) => {
+        return (
+          <button
+            key={letter.toString()}
+            id={letter}
+            className="abcLetter"
+            onClick={() => handleClickABCButton(letter)}
+          >
+            {letter}
+          </button>
+        )
+      })}
+    </section>
+  )
+}

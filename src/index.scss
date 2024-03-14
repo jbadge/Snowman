@@ -33,12 +33,16 @@ main {
     }
     h2 {
       font-size: 1rem;
+      line-height: 1.5rem;
+      &.won {
+        font-family: 'Sue Ellen Francisco';
+        color: #fff;
+        text-shadow: 1px 1px 5px #000000;
+        font-size: 2.5rem;
+      }
     }
     #gameButton {
       margin-top: 2rem;
-      &.hidden {
-        visibility: hidden;
-      }
     }
   }
   section {
@@ -54,6 +58,17 @@ main {
         .snowman-area {
           display: flex;
           justify-content: center;
+          position: relative;
+          color: #fff;
+
+          .text {
+            position: absolute;
+            font-family: 'Sue Ellen Francisco';
+            fill: #fff;
+            text-shadow: 3px 3px 1px #000000;
+            font-size: 2rem;
+            z-index: 1;
+          }
           img {
             position: relative;
             float: left;
@@ -68,11 +83,9 @@ main {
             width: 320px;
             height: 320px;
             z-index: 1;
+            font-size: 5;
             &.hidden {
               visibility: hidden;
-            }
-            &.won {
-              visibility: visible;
             }
           }
         }
@@ -158,5 +171,33 @@ button[disabled] {
         justify-content: center;
       }
     }
+  }
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.elementToFadeIn {
+  animation: fade-in 1s linear forwards;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0%;
+  }
+  to {
+    opacity: 100%;
+  }
+}
+
+.elementToFadeOut {
+  animation: fade-out 1s linear forwards;
+}
+@keyframes fade-out {
+  from {
+    opacity: 100%;
+  }
+  to {
+    opacity: 0%;
   }
 }
