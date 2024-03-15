@@ -117,6 +117,7 @@ export function App() {
 
     // TESTMODE: Helper for debugging
     if (testMode === 1) {
+      console.log(game)
       console.log(`The word is ${tempWord.join('')}`)
       console.log(`The state is ${tempState}`)
     }
@@ -153,9 +154,6 @@ export function App() {
   }
 
   function toggleButton(tempGame: Game) {
-    console.log(
-      `The state of the game is ${tempGame.state} and the game letter is ${tempGame.letter}`
-    )
     // Disable single button
     if (
       (tempGame.state === 'playing' || tempGame.state === 'new') &&

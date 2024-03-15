@@ -13,7 +13,6 @@ export function GameButton({ gameState, makeGame }: GameButtonProps) {
   }
 
   function buttonLabel() {
-    console.log(`in GameButton the game state is ${gameState}`)
     if (gameState === null) {
       return 'New Game'
     } else if (gameState === 'new') {
