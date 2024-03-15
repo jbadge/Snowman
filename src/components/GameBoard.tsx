@@ -58,6 +58,18 @@ export function GameBoard({ gameBoard, picCount }: GameBoardProps) {
                 </textPath>
               </text>
             </svg>
+            <svg id="loser" className="text hidden" viewBox="0 0 130 50">
+              <path
+                id="curve"
+                fill="transparent"
+                d="M 6.377 40.098 C 52.771 23.525 86.934 31.201 123.769 40.729"
+              />
+              <text>
+                <textPath startOffset="18" href="#curve">
+                  You Lost!
+                </textPath>
+              </text>
+            </svg>
           </div>
           <div className="revealed-area">
             <ul className="letters-revealed">

@@ -13,18 +13,28 @@ export function GameButton({ gameState, makeGame }: GameButtonProps) {
   }
 
   function buttonLabel() {
+    console.log(`in GameButton the game state is ${gameState}`)
     if (gameState === null) {
       return 'New Game'
     } else if (gameState === 'new') {
       // Fade Out
-      setTimeout(function () {
-        button?.classList.add('elementToFadeOut')
+      if (button?.innerHTML === 'Play Again?') {
         setTimeout(function () {
-          button?.classList.add('hidden')
-          return 'Restart Game'
+          button?.classList.add('elementToFadeOut')
+          setTimeout(function () {
+            button?.classList.add('hidden')
+          }, 1000)
         }, 1000)
-      }, 1000)
-      return 'New Game'
+        return 'Play Again?'
+      } else {
+        setTimeout(function () {
+          button?.classList.add('elementToFadeOut')
+          setTimeout(function () {
+            button?.classList.add('hidden')
+          }, 1000)
+        }, 500)
+        return 'New Game'
+      }
     } else if (gameState === 'playing') {
       // Fade In
       if (button?.classList.contains('hidden')) {
